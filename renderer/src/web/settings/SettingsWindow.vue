@@ -253,10 +253,6 @@ function flatJoin<T, J> (arr: T[][], joinEl: () => J) {
   overflow: hidden;
   @apply bg-gray-800;
   @apply rounded-b;
-  &:global {
-    animation-name: slideInDown;
-    animation-duration: 1s;
-  }
 }
 
 .menu-item {
