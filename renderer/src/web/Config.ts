@@ -7,6 +7,7 @@ import type { StashSearchWidget } from './stash-search/widget'
 import type { ItemCheckWidget } from './item-check/widget'
 import type { ItemSearchWidget } from './item-search/widget'
 import { registry as widgetRegistry } from './overlay/widget-registry.js'
+import { SaleType } from '@/web/price-check/filters/interfaces'
 
 const _config = shallowRef<Config | null>(null)
 let _lastSavedConfig: Config | null = null
@@ -81,19 +82,23 @@ export async function initConfig () {
   }
 
   updateConfig(upgradeConfig(config))
+  pushHostConfig()
 }
 
 export function poeWebApi () {
   const { language, useIntlSite } = AppConfig()
-  if (useIntlSite) {
-    return 'www.pathofexile.com'
-  }
   switch (language) {
     case 'en': return 'www.pathofexile.com'
     case 'ru': return 'ru.pathofexile.com'
-    case 'cmn-Hant': return 'pathofexile.tw'
+    case 'cn-Hant': return (realm === 'pc-garena')
+      ? 'pathofexile.tw'
+      : 'www.pathofexile.com'
+    case 'cn-Hans': return (realm === 'pc-tencent')
+      ? 'poe.game.qq.com'
+      : 'www.pathofexile.com'
     case 'ko': return 'poe.game.daum.net'
   }
+  return 'www.pathofexile.com'
 }
 
 export interface Config {
@@ -103,10 +108,12 @@ export interface Config {
   overlayBackground: string
   overlayBackgroundClose: boolean
   restoreClipboard: boolean
+  cookies: string
   commands: Array<{
     text: string
     hotkey: string | null
     send: boolean
+    restoreLastChat: boolean
   }>
   clientLog: string | null
   gameConfig: string | null
@@ -114,12 +121,13 @@ export interface Config {
   logKeys: boolean
   accountName: string
   stashScroll: boolean
-  language: 'en' | 'ru' | 'cmn-Hant' | 'ko'
-  realm: 'pc-ggg' | 'pc-garena'
+  language: 'cn-Hans'| 'en' | 'ru' | 'cn-Hant' | 'ko'
+  realm: 'pc-ggg' | 'pc-garena' | 'pc-tencent' | 'ko'
   useIntlSite: boolean
   widgets: widget.Widget[]
   fontSize: number
   showAttachNotification: boolean
+  defaultSaleType: SaleType
 }
 
 export const defaultConfig = (): Config => ({
@@ -132,36 +140,44 @@ export const defaultConfig = (): Config => ({
   commands: [{
     text: '/hideout',
     hotkey: 'F5',
-    send: true
+    send: true,
+    restoreLastChat: true
   }, {
     text: '/exit',
     hotkey: 'F9',
-    send: true
+    send: true,
+    restoreLastChat: true
   }, {
     text: '@last ty',
     hotkey: null,
-    send: true
+    send: true,
+    restoreLastChat: true
   }, {
     text: '/invite @last',
     hotkey: null,
-    send: true
+    send: true,
+    restoreLastChat: true
   }, {
     text: '/tradewith @last',
     hotkey: null,
-    send: true
+    send: true,
+    restoreLastChat: true
   }, {
     text: '/hideout @last',
     hotkey: null,
-    send: true
+    send: true,
+    restoreLastChat: true
   }],
   clientLog: null,
   gameConfig: null,
-  windowTitle: 'Path of Exile',
+  windowTitle: '流放之路',
   logKeys: false,
   accountName: '',
   stashScroll: true,
-  language: 'en',
+  language: 'cn-Hans',
+  cookies: '',
   realm: 'pc-ggg',
+  defaultSaleType: SaleType.ANY,
   useIntlSite: false,
   fontSize: 16,
   widgets: widgetRegistry.widgets.reduce<widget.Widget[]>((widgets, { widget }) => {
@@ -320,7 +336,9 @@ function upgradeConfig (_config: Config): Config {
 
     config.realm = 'pc-ggg'
     if (config.language === 'zh_TW' as string) {
-      config.language = 'cmn-Hant'
+      config.language = 'cn-Hant'
+    } else if (config.language === 'zh_CN' as string) {
+      config.language = 'cn-Hans'
     }
 
     config.configVersion = 12
@@ -427,7 +445,7 @@ function upgradeConfig (_config: Config): Config {
   }
 
   if (config.configVersion < 18) {
-    config.useIntlSite = (config.language === 'cmn-Hant' && config.realm === 'pc-ggg')
+    config.useIntlSite = (config.language === 'cn-Hant' && config.realm === 'pc-ggg')
 
     config.configVersion = 18
   }
@@ -501,7 +519,7 @@ function getConfigForHost (): HostConfig {
     if (command.hotkey) {
       actions.push({
         shortcut: command.hotkey,
-        action: { type: 'paste-in-chat', text: command.text, send: command.send }
+        action: { type: 'paste-in-chat', text: command.text, send: command.send, restoreLastChat: command.restoreLastChat }
       })
     }
   }
@@ -561,6 +579,8 @@ function getConfigForHost (): HostConfig {
     overlayKey: config.overlayKey,
     logKeys: config.logKeys,
     windowTitle: config.windowTitle,
-    language: config.language
+    language: config.language,
+    realm: config.realm,
+    cookies: config.cookies
   }
 }

@@ -122,9 +122,9 @@ const LANGUAGE_DETECTOR = [{
   lang: 'ko',
   firstLine: '아이템 종류: '
 }, {
-  lang: 'cmn-Hant',
+  lang: 'cn-Hant',
   firstLine: '物品種類: '
 }, {
-  lang: 'cmn-Hans',
+  lang: 'cn-Hans',
   firstLine: '物品类别: '
 }]

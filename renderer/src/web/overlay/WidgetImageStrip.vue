@@ -46,7 +46,7 @@ export default {
       return [{
         wmId: 0,
         wmType: 'image-strip',
-        wmTitle: 'Cheat sheets',
+        wmTitle: '辛迪加(图片未翻译)',
         wmWants: 'hide',
         wmZorder: null,
         wmFlags: ['invisible-on-blur'],

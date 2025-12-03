@@ -4,6 +4,8 @@ export interface HostConfig {
   clientLog: string | null
   gameConfig: string | null
   stashScroll: boolean
+  cookies: string
+  realm: string
   overlayKey: string
   logKeys: boolean
   windowTitle: string
@@ -32,6 +34,7 @@ export interface ShortcutAction {
     type: 'paste-in-chat'
     text: string
     send: boolean
+    restoreLastChat: boolean
   } | {
     type: 'test-only'
   }

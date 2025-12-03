@@ -4,6 +4,7 @@ import { OverlayController, OVERLAY_WINDOW_OPTS } from 'electron-overlay-window'
 import type { ServerEvents } from '../server'
 import type { Logger } from '../RemoteLogger'
 import type { GameWindow } from './GameWindow'
+import { type HttpProxy, PROXY_HOSTS } from '../proxy'
 
 export class OverlayWindow {
   public isInteractable = false
@@ -16,6 +17,7 @@ export class OverlayWindow {
     private server: ServerEvents,
     private logger: Logger,
     private poeWindow: GameWindow,
+    proxy: HttpProxy
   ) {
     this.server.onEventAnyClient('OVERLAY->MAIN::focus-game', this.assertGameActive)
     this.poeWindow.on('active-change', this.handlePoeWindowActiveChange)
@@ -49,6 +51,8 @@ export class OverlayWindow {
     this.window.webContents.on('did-attach-webview', (_, webviewWebContents) => {
       webviewWebContents.on('before-input-event', this.handleExtraCommands)
     })
+
+    spyOnPathofexileCookies(this.window.webContents, proxy.cookiesForPoe)
 
     this.window.webContents.setWindowOpenHandler((details) => {
       shell.openExternal(details.url)
@@ -141,11 +145,11 @@ export class OverlayWindow {
       this.logger.write('error [Overlay] PoE is running with administrator rights')
 
       dialog.showErrorBox(
-        'PoE window - No access',
+        '打开窗口失败',
         // ----------------------
-        'Path of Exile is running with administrator rights.\n' +
+        '流放之路客户端正以管理员权限运行\n' +
         '\n' +
-        'You need to restart Awakened PoE Trade with administrator rights.'
+        '请重新以管理员权限打开本程序'
       )
     } else {
       this.server.sendEventTo('broadcast', {
@@ -169,4 +173,36 @@ export class OverlayWindow {
     })
     this.isOverlayKeyUsed = false
   }
+}
+
+function spyOnPathofexileCookies (webContents: WebContents, map: Map<string, string>) {
+  const urls = PROXY_HOSTS
+    .filter(({ official }) => official)
+    .map(({ host }) => `https://${host}/*`)
+
+  webContents.session.webRequest.onHeadersReceived({ urls }, (details, next) => {
+    for (const key in details.responseHeaders) {
+      if (key.toLowerCase() === 'set-cookie') {
+        for (const cookie of details.responseHeaders[key]) {
+          const [key, value] = cookie.split(';', 1)[0].split('=', 2)
+          map.set(key, value)
+        }
+        break
+      }
+    }
+    next({ responseHeaders: details?.responseHeaders })
+  })
+
+  webContents.session.webRequest.onBeforeSendHeaders({ urls }, (details, next) => {
+    for (const key in details.requestHeaders) {
+      if (key.toLowerCase() === 'cookie') {
+        for (const part of details.requestHeaders[key].split(';')) {
+          const [key, value] = part.trim().split('=', 2)
+          map.set(key, value)
+        }
+        break
+      }
+    }
+    next({ requestHeaders: details.requestHeaders })
+  })
 }

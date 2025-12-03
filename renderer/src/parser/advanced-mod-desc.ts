@@ -6,6 +6,7 @@ import { removeLinesEnding } from './Parser'
 export const SCOURGE_LINE = ' (scourge)'
 export const ENCHANT_LINE = ' (enchant)'
 export const IMPLICIT_LINE = ' (implicit)'
+export const CRUCIBLE_LINE = ' (crucible)'
 const CRAFTED_LINE = ' (crafted)'
 const FRACTURED_LINE = ' (fractured)'
 const FOULBORN_LINE = ' (mutated)'
@@ -55,10 +56,14 @@ export function parseModInfoLine (line: string, type: ModifierType): ModifierInf
 
     switch (match.groups!.type) {
       case _$.PREFIX_MODIFIER:
+      case '▲ 前缀词缀':
       case _$.CRAFTED_PREFIX:
+      case '▲ 工艺前缀':
         generation = 'prefix'; break
       case _$.SUFFIX_MODIFIER:
+      case '▽ 后缀词缀':
       case _$.CRAFTED_SUFFIX:
+      case '▽ 工艺后缀':
         generation = 'suffix'; break
       case _$.CORRUPTED_IMPLICIT:
         generation = 'corrupted'; break
@@ -136,6 +141,9 @@ export function parseModType (lines: string[]): { modType: ModifierType, lines: 
   } else if (lines.some(line => line.endsWith(CRAFTED_LINE))) {
     modType = ModifierType.Crafted
     lines = removeLinesEnding(lines, CRAFTED_LINE)
+  } else if (lines.some(line => line.endsWith(CRUCIBLE_LINE))) {
+    modType = ModifierType.Crucible
+    lines = removeLinesEnding(lines, CRUCIBLE_LINE)
   } else if (lines.some(line => line.endsWith(FOULBORN_LINE))) {
     modType = ModifierType.Explicit
     lines = removeLinesEnding(lines, FOULBORN_LINE)

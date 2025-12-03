@@ -31,7 +31,7 @@ export default {
       return [{
         wmId: 0,
         wmType: 'stash-search',
-        wmTitle: 'Map rolling',
+        wmTitle: '地图词缀',
         wmWants: 'hide',
         wmZorder: null,
         wmFlags: ['invisible-on-blur'],
@@ -43,14 +43,14 @@ export default {
         enableHotkeys: true,
         entries: [
           { id: 1, name: '', text: '"Pack Size: +3"', hotkey: null },
-          { id: 2, name: '', text: 'Reflect', hotkey: null },
-          { id: 3, name: '', text: '"Cannot Leech Life"', hotkey: null },
-          { id: 4, name: '', text: '"Cannot Leech Mana"', hotkey: null }
+          { id: 2, name: '反射', text: 'Reflect', hotkey: null },
+          { id: 3, name: '无法偷取生命', text: '"Cannot Leech Life"', hotkey: null },
+          { id: 4, name: '无法偷取魔力', text: '"Cannot Leech Mana"', hotkey: null }
         ]
       }, {
         wmId: 0,
         wmType: 'stash-search',
-        wmTitle: 'Dump sorting',
+        wmTitle: '物品过滤',
         wmWants: 'hide',
         wmZorder: null,
         wmFlags: ['invisible-on-blur'],
@@ -61,11 +61,11 @@ export default {
         },
         enableHotkeys: true,
         entries: [
-          { id: 1, name: '', text: 'Currency', hotkey: null },
-          { id: 2, name: '', text: '"Divination Card"', hotkey: null },
-          { id: 3, name: '', text: 'Fossil', hotkey: null },
-          { id: 4, name: '', text: '"Map Tier"', hotkey: null },
-          { id: 5, name: '', text: '"Map Device" "Rarity: Normal"', hotkey: null },
+          { id: 1, name: '通货', text: 'Currency', hotkey: null },
+          { id: 2, name: '未知命运卡', text: '"Divination Card"', hotkey: null },
+          { id: 3, name: '化石', text: 'Fossil', hotkey: null },
+          { id: 4, name: '地图等级', text: '"Map Tier"', hotkey: null },
+          { id: 5, name: '地图碎片', text: '"Map Device" "Rarity: Normal"', hotkey: null },
           { id: 6, name: '', text: 'Tane Laboratory', hotkey: null }
         ]
       }]

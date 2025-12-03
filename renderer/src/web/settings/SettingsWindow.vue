@@ -29,8 +29,22 @@
         <button v-if="menuItems.length >= 4"
           :class="$style['quit-btn']" @click="quit">{{ t('app.quit') }}</button>
         <div class="text-gray-400 text-center mt-auto pr-3 pt-4 pb-12" style="max-width: fit-content; min-width: 100%;">
-          <img class="mx-auto mb-1" src="/images/peepoLove2x.webp">
-          {{ t('Support development on') }}<br> <a href="https://patreon.com/awakened_poe_trade" class="inline-flex mt-1" target="_blank"><img class="inline h-5" src="/images/Patreon.svg"></a>
+          {{ t('Support development on') }}
+          <br>
+          <a href="https://patreon.com/awakened_poe_trade" class="inline-flex mt-1" target="_blank">
+            <img class="inline h-5" src="/images/Patreon.svg"/>
+          </a>
+          <br/>
+          <a href="https://b23.tv/Nc0SoKK" class="inline-flex mt-1" target="_blank">
+            二次开发不需要赞助
+            <br/>
+            给Up主关注三连就好
+          </a>
+          <br/>
+          <a href="https://b23.tv/Nc0SoKK" class="inline-flex items-center mt-1 px-1 bg-white text-black" target="_blank">
+            <img class="inline h-5" src="/images/bilibili.webp" />
+            大熊是个程序员
+          </a>
         </div>
       </div>
       <div class="text-gray-100 grow layout-column bg-gray-900">

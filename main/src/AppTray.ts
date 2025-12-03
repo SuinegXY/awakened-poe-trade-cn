@@ -23,7 +23,7 @@ export class AppTray {
     }
 
     this.tray = new Tray(trayImage)
-    this.tray.setToolTip(`Awakened PoE Trade v${app.getVersion()}`)
+    this.tray.setToolTip(`Awakened PoE 查价器 CN v${app.getVersion()}`)
     this.rebuildMenu()
 
     server.onEventAnyClient('CLIENT->MAIN::user-action', ({ action }) => {
@@ -36,7 +36,7 @@ export class AppTray {
   rebuildMenu () {
     const contextMenu = Menu.buildFromTemplate([
       {
-        label: 'Settings/League',
+        label: '设置',
         click: () => {
           dialog.showMessageBox({
             title: 'Settings',
@@ -45,20 +45,20 @@ export class AppTray {
         }
       },
       {
-        label: 'Open in Browser',
+        label: '浏览器打开界面',
         click: () => {
           shell.openExternal(`http://localhost:${this.serverPort}`)
         }
       },
       { type: 'separator' },
       {
-        label: 'Open config folder',
+        label: '打开配置文件目录',
         click: () => {
           shell.openPath(path.join(app.getPath('userData'), 'apt-data'))
         }
       },
       {
-        label: 'Quit',
+        label: '退出',
         click: () => {
           app.quit()
         }

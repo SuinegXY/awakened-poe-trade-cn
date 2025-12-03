@@ -20,6 +20,8 @@ export interface Stat {
   matchers: StatMatcher[]
   better: StatBetter
   fromAreaMods?: 'yes' | 'ubermap_exclusive' | 'heist_exclusive'
+  fromUberAreaMods?: true
+  fromHeistAreaMods?: true
   anointments?: Array<{ roll: number, oils: string }> // Ring anointments
   trade: {
     inverted?: true
@@ -150,6 +152,7 @@ export interface TranslationDict {
   ITEM_SUPERIOR: RegExp
   MAP_BLIGHTED: RegExp
   MAP_BLIGHT_RAVAGED: RegExp
+  MAP_REWARD: string
   INFLUENCE_SHAPER: string
   INFLUENCE_ELDER: string
   INFLUENCE_CRUSADER: string
