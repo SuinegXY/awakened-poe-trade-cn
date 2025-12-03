@@ -16,13 +16,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
-    - run: npm ci
+    - run: yarn --frozen-lockfile
       working-directory: ./renderer
-    - run: npm run make-index-files
+    - run: yarn make-index-files
       working-directory: ./renderer
-    - run: npm run lint
+    - run: yarn lint
       working-directory: ./renderer
-    - run: npm run build
+    - run: yarn build
       working-directory: ./renderer
     - uses: actions/upload-artifact@v4
       with:
@@ -43,11 +43,11 @@ jobs:
       with:
         name: renderer-dist
         path: ./renderer/dist
-    - run: npm ci
+    - run: yarn --frozen-lockfile
       working-directory: ./main
-    - run: npm run build
+    - run: yarn build
       working-directory: ./main
-    - run: npm run package "--" -p onTagOrDraft
+    - run: yarn package -p always
       working-directory: ./main
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
