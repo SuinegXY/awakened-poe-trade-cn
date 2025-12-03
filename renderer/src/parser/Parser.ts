@@ -202,16 +202,6 @@ function normalizeName (item: ParserState) {
   }
 }
 
-function getInfo (item: ParserState, ns: BaseType['namespace']) {
-  let info: BaseType[] | undefined
-  if (ns === 'CAPTURED_BEAST' || ns === 'ITEM') {
-    info = ITEM_BY_TRANSLATED(ns, item.baseType ?? item.name) ?? ITEM_BY_REF(ns, item.baseType ?? item.name)
-  } else {
-    info = ITEM_BY_TRANSLATED(ns, item.name) ?? ITEM_BY_REF(ns, item.name)
-  }
-  return info
-}
-
 function findInDatabase (item: ParserState) {
   let info: BaseType[] | undefined
   if (item.category === ItemCategory.DivinationCard) {
@@ -367,8 +357,8 @@ function parseNamePlate (section: string[]) {
   const item: ParserState = {
     rarity: undefined,
     category: undefined,
-    name: name,
-    baseType: baseType,
+    name,
+    baseType,
     isUnidentified: false,
     isCorrupted: false,
     newMods: [],

@@ -86,7 +86,7 @@ export async function initConfig () {
 }
 
 export function poeWebApi () {
-  const { language, useIntlSite, realm } = AppConfig()
+  const { language, realm } = AppConfig()
   switch (language) {
     case 'en': return 'www.pathofexile.com'
     case 'ru': return 'ru.pathofexile.com'
@@ -121,7 +121,7 @@ export interface Config {
   logKeys: boolean
   accountName: string
   stashScroll: boolean
-  language: 'cn-Hans'| 'en' | 'ru' | 'cn-Hant' | 'ko'
+  language: 'cn-Hans' | 'en' | 'ru' | 'cn-Hant' | 'ko'
   realm: 'pc-ggg' | 'pc-garena' | 'pc-tencent' | 'ko'
   useIntlSite: boolean
   widgets: widget.Widget[]

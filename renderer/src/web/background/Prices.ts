@@ -6,7 +6,6 @@ import { Buffer } from 'buffer'
 import pako from 'pako'
 import { CLIENT_STRINGS as _$, ITEM_BY_REF, type BaseType } from '@/assets/data'
 
-
 interface NinjaDenseInfo {
   chaos: number
   graph: Array<number | null>
@@ -69,10 +68,11 @@ export const usePoeninja = createGlobalState(() => {
         divine = findPriceByQuery({ ns: 'ITEM', name: 'Divine Orb', variant: undefined })
       } else if (league.realm === 'pc-tencent') {
         let jsonurl: string
-        if (league.id == '永久')
-            jsonurl = 'pub-feb51ef2e03741399e6a3d2d09a07601.r2.dev/price1.txt'
-        else
-            jsonurl = 'pub-feb51ef2e03741399e6a3d2d09a07601.r2.dev/price2.txt'
+        if (league.id === '永久') {
+          jsonurl = 'pub-feb51ef2e03741399e6a3d2d09a07601.r2.dev/price1.txt'
+        } else {
+          jsonurl = 'pub-feb51ef2e03741399e6a3d2d09a07601.r2.dev/price2.txt'
+        }
         let response
         try {
           response = await Host.proxy(jsonurl, {
