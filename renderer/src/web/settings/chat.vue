@@ -35,7 +35,8 @@ export default defineComponent({
         props.config.commands.push({
           text: '',
           hotkey: null,
-          send: true
+          send: true,
+          restoreLastChat: true
         })
       },
       removeCommand (idx: number) {

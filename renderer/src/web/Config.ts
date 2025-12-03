@@ -86,7 +86,7 @@ export async function initConfig () {
 }
 
 export function poeWebApi () {
-  const { language, useIntlSite } = AppConfig()
+  const { language, useIntlSite, realm } = AppConfig()
   switch (language) {
     case 'en': return 'www.pathofexile.com'
     case 'ru': return 'ru.pathofexile.com'

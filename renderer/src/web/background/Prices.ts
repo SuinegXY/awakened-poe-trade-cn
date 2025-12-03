@@ -2,6 +2,9 @@ import { shallowRef, watch, readonly } from 'vue'
 import { createGlobalState } from '@vueuse/core'
 import { Host } from '@/web/background/IPC'
 import { useLeagues } from './Leagues'
+import { Buffer } from 'buffer'
+import pako from 'pako'
+import { CLIENT_STRINGS as _$, ITEM_BY_REF, type BaseType } from '@/assets/data'
 
 
 interface NinjaDenseInfo {
@@ -62,7 +65,7 @@ export const usePoeninja = createGlobalState(() => {
         })
         const jsonBlob = await response.text()
 
-        PRICES_DB = splitJsonBlob(jsonBlob) as PriceDatabase
+        PRICES_DB = splitJsonBlob(jsonBlob, 'pc-ggg')
         divine = findPriceByQuery({ ns: 'ITEM', name: 'Divine Orb', variant: undefined })
       } else if (league.realm === 'pc-tencent') {
         let jsonurl: string
@@ -82,7 +85,7 @@ export const usePoeninja = createGlobalState(() => {
         }
         const compressedBuffer = Buffer.from(await response.text(), 'base64')
         const jsonBlob = pako.ungzip(compressedBuffer, { to: 'string' })
-        PRICES_DB_CN = splitJsonBlob(jsonBlob) as PriceDatabaseCN
+        PRICES_DB_CN = splitJsonBlob(jsonBlob, 'pc-tencent')
         divine = findPriceByQuery({ ns: 'ITEM', name: 'Divine Orb', variant: undefined })
       }
       if (divine && divine.chaos >= 30) {
@@ -223,11 +226,10 @@ function denseInfoToDetailsId (info: NinjaDenseInfo): string {
     .replace(/ /g, '-')
 }
 
-function splitJsonBlob (jsonBlob: string): PriceDatabase {
-  const leagues = useLeagues()
-  const league = leagues.selected.value
-
-  if (league?.realm === 'pc-ggg') {
+function splitJsonBlob (jsonBlob: string, realm: 'pc-ggg'): PriceDatabase
+function splitJsonBlob (jsonBlob: string, realm: 'pc-tencent'): PriceDatabaseCN
+function splitJsonBlob (jsonBlob: string, realm: 'pc-ggg' | 'pc-tencent'): PriceDatabase | PriceDatabaseCN {
+  if (realm === 'pc-ggg') {
     const NINJA_OVERVIEW = '{"type":"'
     const NAMESPACE_MAP: Array<{ ns: string, url: string, type: string }> = [
       { ns: 'ITEM', url: 'currency', type: 'Currency' },
@@ -281,7 +283,9 @@ function splitJsonBlob (jsonBlob: string): PriceDatabase {
       startPos = endPos
     }
     return database
-  } else if (league?.realm === 'pc-tencent') {
+  }
+
+  if (realm === 'pc-tencent') {
     const jsonArray = JSON.parse(jsonBlob)
     const database: PriceDatabaseCN = []
     for (const json of jsonArray) {
@@ -289,6 +293,8 @@ function splitJsonBlob (jsonBlob: string): PriceDatabase {
     }
     return database
   }
+
+  throw new Error('Unsupported league realm for splitJsonBlob')
 }
 
 export function displayRounding (value: number, fraction: boolean = false): string {

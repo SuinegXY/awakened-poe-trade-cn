@@ -12,7 +12,7 @@ import { linesToStatStrings, tryParseTranslation, getRollOrMinmaxAvg } from './s
 import { ItemCategory, ACCESSORY } from './meta'
 import { IncursionRoom, ParsedItem, ItemInfluence, ItemRarity } from './ParsedItem'
 import { magicBasetype } from './magic-name'
-import { isModInfoLine, groupLinesByMod, parseModInfoLine, parseModType, ModifierInfo, ParsedModifier, ENCHANT_LINE, SCOURGE_LINE, IMPLICIT_LINE } from './advanced-mod-desc'
+import { isModInfoLine, groupLinesByMod, parseModInfoLine, parseModType, ModifierInfo, ParsedModifier, ENCHANT_LINE, SCOURGE_LINE, IMPLICIT_LINE, CRUCIBLE_LINE } from './advanced-mod-desc'
 import { calcPropPercentile, QUALITY_STATS } from './calc-q20'
 import { AppConfig } from '@/web/Config'
 

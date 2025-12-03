@@ -79,6 +79,7 @@ import UiRadio from '@/web/ui/UiRadio.vue'
 import UiCheckbox from '@/web/ui/UiCheckbox.vue'
 import { configModelValue, configProp } from './utils'
 import { AppConfig } from '@/web/Config'
+import { SaleType } from '@/web/price-check/filters/interfaces'
 
 export default defineComponent({
   name: 'settings.general',
