@@ -176,7 +176,7 @@ export const defaultConfig = (): Config => ({
   stashScroll: true,
   language: 'cn-Hans',
   cookies: '',
-  realm: 'pc-ggg',
+  realm: 'pc-tencent',
   defaultSaleType: SaleType.ANY,
   useIntlSite: false,
   fontSize: 16,
