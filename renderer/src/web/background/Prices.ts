@@ -229,62 +229,6 @@ function denseInfoToDetailsId (info: NinjaDenseInfo): string {
 function splitJsonBlob (jsonBlob: string, realm: 'pc-ggg'): PriceDatabase
 function splitJsonBlob (jsonBlob: string, realm: 'pc-tencent'): PriceDatabaseCN
 function splitJsonBlob (jsonBlob: string, realm: 'pc-ggg' | 'pc-tencent'): PriceDatabase | PriceDatabaseCN {
-  if (realm === 'pc-ggg') {
-    const NINJA_OVERVIEW = '{"type":"'
-    const NAMESPACE_MAP: Array<{ ns: string, url: string, type: string }> = [
-      { ns: 'ITEM', url: 'currency', type: 'Currency' },
-      { ns: 'ITEM', url: 'fragments', type: 'Fragment' },
-      { ns: 'ITEM', url: 'delirium-orbs', type: 'DeliriumOrb' },
-      { ns: 'ITEM', url: 'scarabs', type: 'Scarab' },
-      { ns: 'ITEM', url: 'artifacts', type: 'Artifact' },
-      { ns: 'ITEM', url: 'base-types', type: 'BaseType' },
-      { ns: 'ITEM', url: 'fossils', type: 'Fossil' },
-      { ns: 'ITEM', url: 'resonators', type: 'Resonator' },
-      { ns: 'ITEM', url: 'incubators', type: 'Incubator' },
-      { ns: 'ITEM', url: 'oils', type: 'Oil' },
-      { ns: 'ITEM', url: 'vials', type: 'Vial' },
-      { ns: 'ITEM', url: 'invitations', type: 'Invitation' },
-      { ns: 'ITEM', url: 'blighted-maps', type: 'BlightedMap' },
-      { ns: 'ITEM', url: 'blight-ravaged-maps', type: 'BlightRavagedMap' },
-      { ns: 'ITEM', url: 'essences', type: 'Essence' },
-      { ns: 'ITEM', url: 'maps', type: 'Map' },
-      { ns: 'ITEM', url: 'tattoos', type: 'Tattoo' },
-      { ns: 'ITEM', url: 'omens', type: 'Omen' }, { ns: 'ITEM', url: 'coffins', type: 'Coffin' }, { ns: 'DIVINATION_CARD', url: 'divination-cards', type: 'DivinationCard' },
-      { ns: 'CAPTURED_BEAST', url: 'beasts', type: 'Beast' },
-      { ns: 'UNIQUE', url: 'unique-jewels', type: 'UniqueJewel' },
-      { ns: 'UNIQUE', url: 'unique-flasks', type: 'UniqueFlask' },
-      { ns: 'UNIQUE', url: 'unique-weapons', type: 'UniqueWeapon' },
-      { ns: 'UNIQUE', url: 'unique-armours', type: 'UniqueArmour' },
-      { ns: 'UNIQUE', url: 'unique-accessories', type: 'UniqueAccessory' },
-      { ns: 'UNIQUE', url: 'unique-maps', type: 'UniqueMap' },
-      { ns: 'UNIQUE', url: 'unique-relics', type: 'UniqueRelic' },
-      { ns: 'GEM', url: 'skill-gems', type: 'SkillGem' }
-    ]
-
-    const database: PriceDatabase = []
-    let startPos = jsonBlob.indexOf(NINJA_OVERVIEW)
-    if (startPos === -1) return []
-
-    while (true) {
-      const endPos = jsonBlob.indexOf(NINJA_OVERVIEW, startPos + 1)
-
-      const type = jsonBlob.slice(
-        startPos + NINJA_OVERVIEW.length,
-        jsonBlob.indexOf('"', startPos + NINJA_OVERVIEW.length)
-      )
-      const lines = jsonBlob.slice(startPos, (endPos === -1) ? jsonBlob.length : endPos)
-
-      const isSupported = NAMESPACE_MAP.find(entry => entry.type === type)
-      if (isSupported) {
-        database.push({ ns: isSupported.ns, url: isSupported.url, lines })
-      }
-
-      if (endPos === -1) break
-      startPos = endPos
-    }
-    return database
-  }
-
   if (realm === 'pc-tencent') {
     const jsonArray = JSON.parse(jsonBlob)
     const database: PriceDatabaseCN = []
@@ -293,6 +237,60 @@ function splitJsonBlob (jsonBlob: string, realm: 'pc-ggg' | 'pc-tencent'): Price
     }
     return database
   }
+  
+  const NINJA_OVERVIEW = '{"type":"'
+  const NAMESPACE_MAP: Array<{ ns: string, url: string, type: string }> = [
+    { ns: 'ITEM', url: 'currency', type: 'Currency' },
+    { ns: 'ITEM', url: 'fragments', type: 'Fragment' },
+    { ns: 'ITEM', url: 'delirium-orbs', type: 'DeliriumOrb' },
+    { ns: 'ITEM', url: 'scarabs', type: 'Scarab' },
+    { ns: 'ITEM', url: 'artifacts', type: 'Artifact' },
+    { ns: 'ITEM', url: 'base-types', type: 'BaseType' },
+    { ns: 'ITEM', url: 'fossils', type: 'Fossil' },
+    { ns: 'ITEM', url: 'resonators', type: 'Resonator' },
+    { ns: 'ITEM', url: 'incubators', type: 'Incubator' },
+    { ns: 'ITEM', url: 'oils', type: 'Oil' },
+    { ns: 'ITEM', url: 'vials', type: 'Vial' },
+    { ns: 'ITEM', url: 'invitations', type: 'Invitation' },
+    { ns: 'ITEM', url: 'blighted-maps', type: 'BlightedMap' },
+    { ns: 'ITEM', url: 'blight-ravaged-maps', type: 'BlightRavagedMap' },
+    { ns: 'ITEM', url: 'essences', type: 'Essence' },
+    { ns: 'ITEM', url: 'maps', type: 'Map' },
+    { ns: 'ITEM', url: 'tattoos', type: 'Tattoo' },
+    { ns: 'ITEM', url: 'omens', type: 'Omen' }, { ns: 'ITEM', url: 'coffins', type: 'Coffin' }, { ns: 'DIVINATION_CARD', url: 'divination-cards', type: 'DivinationCard' },
+    { ns: 'CAPTURED_BEAST', url: 'beasts', type: 'Beast' },
+    { ns: 'UNIQUE', url: 'unique-jewels', type: 'UniqueJewel' },
+    { ns: 'UNIQUE', url: 'unique-flasks', type: 'UniqueFlask' },
+    { ns: 'UNIQUE', url: 'unique-weapons', type: 'UniqueWeapon' },
+    { ns: 'UNIQUE', url: 'unique-armours', type: 'UniqueArmour' },
+    { ns: 'UNIQUE', url: 'unique-accessories', type: 'UniqueAccessory' },
+    { ns: 'UNIQUE', url: 'unique-maps', type: 'UniqueMap' },
+    { ns: 'UNIQUE', url: 'unique-relics', type: 'UniqueRelic' },
+    { ns: 'GEM', url: 'skill-gems', type: 'SkillGem' }
+  ]
+
+  const database: PriceDatabase = []
+  let startPos = jsonBlob.indexOf(NINJA_OVERVIEW)
+  if (startPos === -1) return []
+
+  while (true) {
+    const endPos = jsonBlob.indexOf(NINJA_OVERVIEW, startPos + 1)
+
+    const type = jsonBlob.slice(
+      startPos + NINJA_OVERVIEW.length,
+      jsonBlob.indexOf('"', startPos + NINJA_OVERVIEW.length)
+    )
+    const lines = jsonBlob.slice(startPos, (endPos === -1) ? jsonBlob.length : endPos)
+
+    const isSupported = NAMESPACE_MAP.find(entry => entry.type === type)
+    if (isSupported) {
+      database.push({ ns: isSupported.ns, url: isSupported.url, lines })
+    }
+
+    if (endPos === -1) break
+    startPos = endPos
+  }
+  return database
 }
 
 export function displayRounding (value: number, fraction: boolean = false): string {
