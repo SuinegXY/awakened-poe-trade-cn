@@ -63,19 +63,19 @@ jobs:
           ./main/dist/*.zip
           ./main/dist/latest.yml
 
-      - name: Install GitHub CLI
-        uses: cli/cli@v2
+    - name: Install GitHub CLI
+      uses: cli/cli@v2
 
-      - name: Create Release if not exists
-        run: |
-          gh release view latest || gh release create latest --notes "Auto build"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create Release if not exists
+      run: |
+        gh release view latest || gh release create latest --notes "Auto build"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload to Release
-        run: |
-          gh release upload latest ./main/dist/*.exe --clobber
-          gh release upload latest ./main/dist/*.zip --clobber
-          gh release upload latest ./main/dist/latest.yml --clobber
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload to Release
+      run: |
+        gh release upload latest ./main/dist/*.exe --clobber
+        gh release upload latest ./main/dist/*.zip --clobber
+        gh release upload latest ./main/dist/latest.yml --clobber
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
