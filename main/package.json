@@ -1,5 +1,5 @@
 {
-  "name": "awakened-poe-trade-CN",
+  "name": "awakened-poe-trade-cn",
   "version": "3.27.105",
   "private": true,
   "scripts": {
@@ -8,11 +8,11 @@
     "package": "electron-builder build"
   },
   "author": {
-    "name": "Alexander Drozdov"
+    "name": "Alexander Drozdov and SuinegXY"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/suineg/awakened-poe-trade-cn.git"
+    "url": "https://github.com/SuinegXY/awakened-poe-trade-cn.git"
   },
   "main": "dist/main.js",
   "dependencies": {
