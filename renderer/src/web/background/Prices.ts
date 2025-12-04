@@ -237,7 +237,6 @@ function splitJsonBlob (jsonBlob: string, realm: 'pc-ggg' | 'pc-tencent'): Price
     }
     return database
   }
-  
   const NINJA_OVERVIEW = '{"type":"'
   const NAMESPACE_MAP: Array<{ ns: string, url: string, type: string }> = [
     { ns: 'ITEM', url: 'currency', type: 'Currency' },
