@@ -293,8 +293,6 @@ function splitJsonBlob (jsonBlob: string, realm: 'pc-ggg' | 'pc-tencent'): Price
     }
     return database
   }
-
-  throw new Error('Unsupported league realm for splitJsonBlob')
 }
 
 export function displayRounding (value: number, fraction: boolean = false): string {
