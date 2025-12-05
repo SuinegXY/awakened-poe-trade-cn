@@ -55,6 +55,10 @@ export function createExactStatFilters (
     keepByType.push(ModifierType.Explicit)
   }
 
+  if (item.map!.tier === 17) {
+    keepByType.push(ModifierType.Explicit)
+  }
+  
   if (item.category === ItemCategory.Flask) {
     keepByType.push(ModifierType.Crafted)
   }

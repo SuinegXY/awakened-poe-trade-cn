@@ -1,5 +1,5 @@
 import { ItemInfluence, ItemCategory, ParsedItem, ItemRarity } from '@/parser'
-import { ItemFilters, StatFilter, INTERNAL_TRADE_IDS, InternalTradeId } from '../filters/interfaces'
+import { ItemFilters, StatFilter, INTERNAL_TRADE_IDS, InternalTradeId, SaleType } from '../filters/interfaces'
 import { setProperty as propSet } from 'dot-prop'
 import { DateTime } from 'luxon'
 import { Host } from '@/web/background/IPC'
@@ -8,6 +8,7 @@ import { stat, STAT_BY_REF_V2, pseudoStatByRef } from '@/assets/data'
 import { RateLimiter } from './RateLimiter'
 import { ModifierType } from '@/parser/modifiers'
 import { Cache } from './Cache'
+import { AppConfig } from '@/web/Config'
 
 export const CATEGORY_TO_TRADE_ID = new Map([
   [ItemCategory.Map, 'map'],
@@ -123,6 +124,9 @@ interface TradeRequest { /* eslint-disable camelcase */
           links?: FilterRange
           sockets?: {
             w?: number
+            r?: number
+            g?: number
+            b?: number
           }
         }
       }
@@ -276,6 +280,11 @@ export function createTradeRequest (filters: ItemFilters, stats: StatFilter[], i
   }
   const { query } = body
 
+  if (AppConfig().realm === 'pc-tencent') {
+    const saleType = AppConfig().defaultSaleType ?? SaleType.ANY
+    propSet(query.filters, 'trade_filters.filters.sale_type.option', saleType)
+  }
+
   if (filters.trade.currency) {
     propSet(query.filters, 'trade_filters.filters.price.option', filters.trade.currency)
   }
@@ -365,6 +374,18 @@ export function createTradeRequest (filters: ItemFilters, stats: StatFilter[], i
 
   if (filters.whiteSockets && !filters.whiteSockets.disabled) {
     propSet(query.filters, 'socket_filters.filters.sockets.w', filters.whiteSockets.value)
+  }
+
+  if (filters.redSockets && !filters.redSockets.disabled) {
+    propSet(query.filters, 'socket_filters.filters.sockets.r', filters.redSockets.value)
+  }
+
+  if (filters.greenSockets && !filters.greenSockets.disabled) {
+    propSet(query.filters, 'socket_filters.filters.sockets.g', filters.greenSockets.value)
+  }
+
+  if (filters.blueSockets && !filters.blueSockets.disabled) {
+    propSet(query.filters, 'socket_filters.filters.sockets.b', filters.blueSockets.value)
   }
 
   if (filters.mapTier && !filters.mapTier.disabled) {
@@ -610,7 +631,7 @@ export async function requestResults (
     if (_data.error) {
       throw new Error(_data.error.message)
     } else {
-      data = _data.result.filter(res => res != null)
+      data = _data.result.filter(res => res != null && !res.item.note?.endsWith('.')) as FetchResult[]
     }
 
     cache.set<FetchResult[]>(resultIds, data, Cache.deriveTtl(...RATE_LIMIT_RULES.SEARCH, ...RATE_LIMIT_RULES.FETCH))
@@ -627,6 +648,7 @@ export async function requestResults (
       relativeDate: DateTime.fromISO(result.listing.indexed).toRelative({ style: 'short' }) ?? '',
       priceAmount: result.listing.price?.amount ?? 0,
       priceCurrency: result.listing.price?.currency ?? 'no price',
+      priceType: result.listing.price?.type ?? '',
       hasNote: result.item.note != null,
       hasFee: result.listing.fee != null,
       isMine: (result.listing.account.name === opts.accountName),

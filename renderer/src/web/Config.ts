@@ -339,6 +339,7 @@ function upgradeConfig (_config: Config): Config {
       config.language = 'cn-Hant'
     } else if (config.language === 'zh_CN' as string) {
       config.language = 'cn-Hans'
+      config.realm = 'pc-tencent'
     }
 
     config.configVersion = 12

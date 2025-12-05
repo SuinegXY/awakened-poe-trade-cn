@@ -10,6 +10,7 @@ import { PERMANENT_SC } from '../../background/Leagues'
 export const SPECIAL_SUPPORT_GEM = ['Empower Support', 'Enlighten Support', 'Enhance Support']
 
 interface CreateOptions {
+  offline: boolean
   league: string
   currency: string | undefined
   collapseListings: 'app' | 'api'
@@ -93,7 +94,7 @@ export function createFilters (
         disabled: false
       }
     }
-    if (item.info.refName === 'Mirrored Tablet') {
+    if (item.info.refName === 'Mirrored Tablet' || item.info.refName === 'Forbidden Tome') {
       filters.areaLevel = {
         value: item.areaLevel!,
         disabled: false

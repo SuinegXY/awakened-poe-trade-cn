@@ -29,6 +29,9 @@ export interface ItemFilters {
   }
   linkedSockets?: FilterNumeric
   whiteSockets?: FilterNumeric
+  redSockets?: FilterNumeric
+  greenSockets?: FilterNumeric
+  blueSockets?: FilterNumeric
   corrupted?: {
     value: boolean
     exact?: boolean
@@ -87,23 +90,23 @@ export interface ItemFilters {
 export enum SaleType {
   ANY = 'any',
   /**
-   * ¾«È·Ò»¿Ú¼Û
+   * ç²¾ç¡®ä¸€å£ä»·
    */
   STRICT_AUTO_BUYOUT = 'strict_auto_buyout',
   /**
-   * Ò»¿Ú¼Û
+   * ä¸€å£ä»·
    */
   AUTO_BUYOUT = 'auto_buyout',
   /**
-   * Ñ¯¼Û
+   * è¯¢ä»·
    */
   PRICED = 'priced',
   /**
-   * ±¸×¢
+   * å¤‡æ³¨
    */
   PRICED_WITH_INFO = 'priced_with_info',
   /**
-   * Î´±ê¼Û
+   * æœªæ ‡ä»·
    */
   UNPRICED = 'unpriced'
 }

@@ -26,6 +26,10 @@ export function apiToSatisfySearch (item: ParsedItem, stats: StatFilter[], filte
     return 'trade'
   }
 
+  if (AppConfig().realm === 'pc-tencent') {
+    return 'trade'
+  }
+
   return tradeTag(item) != null ? 'bulk' : 'trade'
 }
 
