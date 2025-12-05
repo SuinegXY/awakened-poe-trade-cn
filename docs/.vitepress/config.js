@@ -22,23 +22,13 @@ export default defineConfig({
     // logo: 'TODO', https://github.com/vuejs/vitepress/issues/1401
     appVersion: '3.27.103',
     github: {
-      releasesUrl: 'https://github.com/SnosMe/awakened-poe-trade/releases'
+      releasesUrl: 'https://github.com/SuinegXY/awakened-poe-trade-cn/releases'
     },
     socialLinks: [
       {
-        text: 'Discord',
-        color: '#7289DA',
-        link: 'https://github.com/SnosMe/awakened-poe-trade/issues/22'
-      },
-      {
-        text: 'Patreon',
-        color: '#FF424D',
-        link: 'https://patreon.com/awakened_poe_trade'
-      },
-      {
         text: 'GitHub',
         color: '#181717',
-        link: 'https://github.com/SnosMe/awakened-poe-trade'
+        link: 'https://github.com/SuinegXY/awakened-poe-trade-cn'
       }
     ],
     sidebar: [
